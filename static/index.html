@@ -10,18 +10,15 @@
 
 <body>
   <p>Reqeust Counter</p>
-  <button onclick="getReqCount()">Update Request Count</button>
+  <button onclick="getReqCount()">Send Request</button>
   <div id="reqCount">0</div>
 
   <script>
     function getReqCount() {
-      fetch('http://127.0.0.1:5000/api',{
-        "keep_alive":true
-      })
+      fetch('http://127.0.0.1:5000/api')
         .then(response => response.json())
         .then(data => {
-          console.log(data)
-          document.getElementById('reqCount').innerText = `No of responses received: ${data.request_count}`;
+          document.getElementById('reqCount').innerText = data.msg ;
         })
         .catch(error => {
           console.error('Error:', error);

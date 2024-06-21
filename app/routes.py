@@ -13,7 +13,7 @@ def api():
 
     request_count +=1
     print("request_count: ",request_count)
-    response = make_response({"request_count": request_count})
+    response = make_response({"msg":"request fullfilled" })
 
     response.set_cookie(
         "request_count",
@@ -22,12 +22,10 @@ def api():
         secure=False,
         path="/",
         httponly=False,
-        domain="127.0.0.1",
+        domain=".127.0.0.1",
         samesite="None",
     )
 
-    print(request.cookies)
-    print(response.headers)
     return response
 
 
