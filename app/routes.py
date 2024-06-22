@@ -1,30 +1,32 @@
 from app import app
-from flask import g, jsonify, make_response, request, send_file
+import os
+import redis
+import uuid
+from flask import make_response, session, send_file
+
+app.secret_key = os.getenv("SECRET_KEY")
+
+r = redis.Redis(host="localhost", port=6379)
+
+
+@app.before_request
+def count_requests():
+    if "user_id" not in session:
+        session["user_id"] = str(uuid.uuid1())
+
+    user_id = session["user_id"]
+
+    r.incr(user_id)
 
 
 @app.route("/")
 def index():
-    return send_file('../static/index.html')
+    return send_file("../static/index.html")
 
 
 @app.route("/api", methods=["GET"])
 def api():
-    request_count = int(request.cookies.get("request_count", "0"))
-
-    request_count +=1
-    print("request_count: ",request_count)
-    response = make_response({"msg":"request fullfilled" })
-
-    response.set_cookie(
-        "request_count",
-        str(request_count),
-        max_age=24 * 60 * 60,
-        secure=False,
-        path="/",
-        httponly=False,
-        domain=".127.0.0.1",
-        samesite="None",
-    )
+    response = make_response({"msg": "request_fullfilled"})
 
     return response
 

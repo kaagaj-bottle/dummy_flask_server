@@ -1,6 +1,5 @@
-from flask import Flask, g
+from flask import Flask
 from flask_cors import CORS
-import threading
 
 
 app = Flask(__name__)

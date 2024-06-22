@@ -11,7 +11,9 @@ setup(
         "psycopg2-binary",
         "Flask",
         "Flask-Cors",
-        "python-dotenv"
+        "python-dotenv",
+        "redis",
+        "Flask-Session",
     ],
     packages=find_packages(),
 )

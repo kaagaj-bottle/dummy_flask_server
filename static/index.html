@@ -9,23 +9,22 @@
 </head>
 
 <body>
-  <p>Reqeust Counter</p>
-  <button onclick="getReqCount()">Send Request</button>
-  <div id="reqCount">0</div>
+  <h1>Welcome</h1>
+  <button onclick="sendRequest()">Send Request</button>
+  <div>Response: <p id="msg">Null</p>
+    <script>
+      function sendRequest() {
+        fetch('http://127.0.0.1:5000/api')
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('msg').innerText = data.msg;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
 
-  <script>
-    function getReqCount() {
-      fetch('http://127.0.0.1:5000/api')
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('reqCount').innerText = data.msg ;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-    }
-
-  </script>
+    </script>
 
 </body>
 
