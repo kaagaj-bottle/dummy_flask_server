@@ -5,26 +5,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Count</title>
-
 </head>
 
 <body>
   <h1>Welcome</h1>
-  <button onclick="sendRequest()">Send Request</button>
-  <div>Response: <p id="msg">Null</p>
-    <script>
-      function sendRequest() {
-        fetch('http://127.0.0.1:5000/api')
-          .then(response => response.json())
-          .then(data => {
-            document.getElementById('msg').innerText = data.msg;
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
+
+  <form id="urlForm">
+    <label for="url">URL:</label>
+    <input type="text" id="url" name="url" required><br>
+    <input type="submit" value="Submit">
+  </form>
+
+  <div id="response">Waiting Request</div>
+  <br>
+  <br>
+  <button is="updateUrlBtn">Update Urls</button>
+  <div>
+    <h3>URLS</h3>
+
+    <div id="urlList">Empty</div>
+  </div>
+
+  <script>
+
+    let urls = []
+    const BASE_URL = "http://127.0.0.1:5000/api";
+
+    const form = document.querySelector("#urlForm");
+    const urlList = document.querySelector("#urlList")
+    const urlText = document.querySelector("#urlText");
+    const updateUrlsBtn = document.querySelector("#updateUrlBtn")
+    const responseText = document.querySelector("#response")
+
+    async function sendUrl() {
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(`${URL}/push_url`, {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        responseText.textContent = data.msg
+      } catch (e) {
+        console.error(e);
+        responseText.textContent = `Error: ${e.message}`;
+      }
+    }
+
+    async function getUrls() {
+      try {
+        const response = await fetch(`${URL}/get_url`, {
+          method: "GET"
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.urls === []) {
+
+          urlList.textContent = "No URLS pushed"
+        } else {
+
+          urlList.textContent = data.urls;
+        }
+
+      } catch (e) {
+        console.error(e);
       }
 
-    </script>
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      sendUrl();
+    });
+  </script>
 
 </body>
 

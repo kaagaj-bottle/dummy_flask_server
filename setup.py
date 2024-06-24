@@ -14,6 +14,7 @@ setup(
         "python-dotenv",
         "redis",
         "Flask-Session",
+        "rq"
     ],
     packages=find_packages(),
 )
