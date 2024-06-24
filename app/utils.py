@@ -16,6 +16,6 @@ def fetch_url_text_from_db(url) -> str:
     return url_text
 
 
-def push_url_text_from_web(url: str) -> None:
+def push_url_text_from_web(url: str):
     url_text = requests.get(url).text
-    r_conn.set(url, url_text)
+    return url_text

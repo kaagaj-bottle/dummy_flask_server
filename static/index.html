@@ -19,7 +19,7 @@
   <div id="response">Waiting Request</div>
   <br>
   <br>
-  <button is="updateUrlBtn">Update Urls</button>
+  <button id="updateUrlBtn">Update Urls</button>
   <div>
     <h3>URLS</h3>
 
@@ -32,8 +32,8 @@
     const BASE_URL = "http://127.0.0.1:5000/api";
 
     const form = document.querySelector("#urlForm");
-    const urlList = document.querySelector("#urlList")
-    const urlText = document.querySelector("#urlText");
+    const urlListDiv = document.querySelector("#urlList")
+    const urlTextDiv = document.querySelector("#urlText");
     const updateUrlsBtn = document.querySelector("#updateUrlBtn")
     const responseText = document.querySelector("#response")
 
@@ -41,7 +41,7 @@
       const formData = new FormData(form);
 
       try {
-        const response = await fetch(`${URL}/push_url`, {
+        const response = await fetch(`http://127.0.0.1:5000/api/push_url`, {
           method: "POST",
           body: formData,
         });
@@ -60,7 +60,7 @@
 
     async function getUrls() {
       try {
-        const response = await fetch(`${URL}/get_url`, {
+        const response = await fetch(`http://127.0.0.1:5000/api/get_url`, {
           method: "GET"
         });
 
@@ -73,8 +73,9 @@
 
           urlList.textContent = "No URLS pushed"
         } else {
+          console.log(data)
 
-          urlList.textContent = data.urls;
+          urlListDiv.textContent = data.urls;
         }
 
       } catch (e) {
@@ -83,10 +84,24 @@
 
     }
 
+    function createUrlList(urlList) {
+      console.log(urlList)
+    }
+
+    async function getUrlText() {
+
+    }
+
+
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       sendUrl();
     });
+    updateUrlsBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      getUrls();
+    })
+
   </script>
 
 </body>
